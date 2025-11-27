@@ -69,7 +69,7 @@ export const regions: Record<Region, RegionConfig> = {
     timezone: "Asia/Hong_Kong",
     currency: "HKD",
     phone: "+852 XXXX XXXX",
-    email: "hk@unincore.com",
+    email: "hk@unincore.us",
   },
   "singapore": {
     code: "singapore",
@@ -88,7 +88,7 @@ export const regions: Record<Region, RegionConfig> = {
     timezone: "Asia/Singapore",
     currency: "SGD",
     phone: "+65 XXXX XXXX",
-    email: "sg@unincore.com",
+    email: "sg@unincore.us",
   },
   "china": {
     code: "china",
@@ -107,7 +107,7 @@ export const regions: Record<Region, RegionConfig> = {
     timezone: "Asia/Shanghai",
     currency: "CNY",
     phone: "+86 XXX XXXX XXXX",
-    email: "cn@unincore.com",
+    email: "cn@unincore.us",
     businessModel: {
       en: "Distributor Partnership",
       zh: "经销商合作模式",
