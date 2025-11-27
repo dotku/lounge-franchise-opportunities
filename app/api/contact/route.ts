@@ -1,10 +1,12 @@
 import { NextResponse } from "next/server";
 import * as nodemailer from "nodemailer";
+import { getRegionConfig, type Region } from "../../config/regions";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, phone, message, language } = body;
+    const { name, email, phone, message, language, region } = body;
+    const regionConfig = region ? getRegionConfig(region as Region) : null;
 
     // Validate required fields
     if (!name || !email || !phone) {
@@ -28,9 +30,10 @@ export async function POST(request: Request) {
     });
 
     // Prepare email content
+    const regionName = regionConfig ? `${regionConfig.name[language === "zh" ? "zh" : "en"]}` : "";
     const subject = language === "zh"
-      ? `新的加盟咨询 - ${name}`
-      : `New Franchise Inquiry - ${name}`;
+      ? `新的加盟咨询${regionName ? ` (${regionName})` : ""} - ${name}`
+      : `New Franchise Inquiry${regionName ? ` (${regionName})` : ""} - ${name}`;
 
     const htmlContent = `
       <html>
@@ -79,10 +82,12 @@ export async function POST(request: Request) {
       </html>
     `;
 
-    // Send email
+    // Send email to region-specific address or default
+    const recipientEmail = regionConfig?.email || "staff@unincore.us";
+
     await transporter.sendMail({
       from: process.env.SMTP_FROM || `"UNI&CORE Franchise" <noreply@unincore.us>`,
-      to: "staff@unincore.us",
+      to: recipientEmail,
       subject: subject,
       html: htmlContent,
       replyTo: email,
